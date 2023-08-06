@@ -1,35 +1,278 @@
 <html>
+    <head>
+        <style>
+           table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse; 
+           }
+           td, th {
+              padding: 10px;
+           }
+        </style>
+     </head>
     <body>
-
+        <button id="btn" style="height:50px;width:100px" onclick="get_all_tweets()"> Get All Tweets                                 </button> 
+        <button id="btn" style="height:50px;width:100px" onclick="get_all_users()" > Get All Users                                  </button>
+        <button id="btn" style="height:50px;width:100px" onclick="get_all_links()" > Get All Links                                  </button> <br>
+        <button id="btn" style="height:50px;width:310px" onclick="get_tweet_info()"> Get Information About A Tweet with TweetID     </button>
+        <input type="text" id="tweetID" value=""> <br>
+        <button id="btn" style="height:50px;width:310px" onclick="get_user_info()" > Get Information About A User with Screen Name  </button>
+        <input type="text" id="userID" value="">
+        
+        <h3>Resulting Table</h3>
+        <div id="container"></div>
         <script>
-            // fetch('http://localhost:8080/users/get_user_info')
-            //         .then(res => {
-            //             return res.json();
-            //         })
-            //         .then(data => {
-            //                console.log(data); 
-            //         })
-            //         .catch(error => console.log(error));
-            
-            function allnames(){
-                
-                fetch('http://localhost:8080/users/get_first_names')
+            //Function to Get All Tweets
+            function get_all_tweets() {
+                fetch('http://localhost:8080/API/get_all_tweets')
                     .then(res => {
-                        
                         return res.json();
                     })
                     .then(data => {
-                        document.getElementById("demo").innerHTML = data;
-                           console.log(data); 
-                    })
+                        //JSON Data Set
+                        jsonData = data;
+                        
+                        //Resetting Container
+                        let container = document.getElementById("container");
+                        container.innerHTML = '';
+
+                        //Creating Table
+                        let table = document.createElement("table");
+                        let tr = document.createElement("tr");
                 
+                        //Going through object keys to set the title for the table
+                        Object.keys(jsonData.tweets[0]).forEach((item) => {
+                            let th = document.createElement("th");
+                            th.innerText = item;
+                            tr.appendChild(th);
+                        });
+                        table.append(tr);
+         
+                        //Setting the data for the tables
+                        jsonData.tweets.forEach((item) => {
+                            let tr = document.createElement("tr");
+                            let items = Object.values(item);
+                            
+                            //Values
+                            items.forEach((values) => {
+                                let td = document.createElement("td");
+                                td.innerText = values;
+                                tr.appendChild(td);
+                            });
+                            table.append(tr);
+                        });
+                        //Add table to container
+                        container.appendChild(table);
+                    })
             }
 
+            //Function to Get All Users
+            function get_all_users() {
+                fetch('http://localhost:8080/API/get_all_users')
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        //JSON Data Set
+                        jsonData = data;
+                        
+                        //Resetting Container
+                        let container = document.getElementById("container");
+                        container.innerHTML = '';
+
+                        //Creating Table
+                        let table = document.createElement("table");
+                        let tr = document.createElement("tr");
+                
+                        //Going through object keys to set the title for the table
+                        Object.keys(jsonData.users[0]).forEach((item) => {
+                            let th = document.createElement("th");
+                            th.innerText = item;
+                            tr.appendChild(th);
+                        });
+                        table.append(tr);
+         
+                        //Setting the data for the tables
+                        jsonData.users.forEach((item) => {
+                            let tr = document.createElement("tr");
+                            let items = Object.values(item);
+                            
+                            //Values
+                            items.forEach((values) => {
+                                let td = document.createElement("td");
+                                td.innerText = values;
+                                tr.appendChild(td);
+                            });
+                            table.append(tr);
+                        });
+                        //Add table to container
+                        container.appendChild(table);
+                    })
+            }
+
+            //Function to Get All Links
+            function get_all_links() {
+                fetch('http://localhost:8080/API/get_all_links')
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        //JSON Data Set
+                        jsonData = data;
+                        
+                        //Resetting Container
+                        let container = document.getElementById("container");
+                        container.innerHTML = '';
+
+                        //Creating Table
+                        let table = document.createElement("table");
+                        let tr = document.createElement("tr");
+                
+                        //Going through object keys to set the title for the table
+                        Object.keys(jsonData.links[0]).forEach((item) => {
+                            let th = document.createElement("th");
+                            th.innerText = item;
+                            tr.appendChild(th);
+                        });
+                        table.append(tr);
+         
+                        //Setting the data for the tables
+                        jsonData.links.forEach((item) => {
+                            let tr = document.createElement("tr");
+                            let items = Object.values(item);
+                            
+                            //Values
+                            items.forEach((values) => {
+                                let td = document.createElement("td");
+                                td.innerText = values;
+                                tr.appendChild(td);
+                            });
+                            table.append(tr);
+                        });
+                        //Add table to container
+                        container.appendChild(table);
+                    })
+            }
+
+            //Function to Get Tweet Info
+            function get_tweet_info() {
+                //Check for input if empty
+                let x = document.getElementById("tweetID").value;
+                if (x == "") {
+                    x = 'SDF'
+                }
+                fetch('http://localhost:8080/API/get_tweet_info/' + x)
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        //Check if correct data was entered
+                        if (data.tweet[0] != null) {
+                            //JSON Data Set
+                            jsonData = data;
+                            
+                            //Resetting Container
+                            let container = document.getElementById("container");
+                            container.innerHTML = '';
+
+                            //Creating Table
+                            let table = document.createElement("table");
+                            let tr = document.createElement("tr");
+                    
+                            //Going through object keys to set the title for the table
+                            Object.keys(jsonData.tweet[0]).forEach((item) => {
+                                let th = document.createElement("th");
+                                th.innerText = item;
+                                tr.appendChild(th);
+                            });
+                            table.append(tr);
+            
+                            //Setting the data for the tables
+                            jsonData.tweet.forEach((item) => {
+                                let tr = document.createElement("tr");
+                                let items = Object.values(item);
+                                
+                                //Values
+                                items.forEach((values) => {
+                                    let td = document.createElement("td");
+                                    td.innerText = values;
+                                    tr.appendChild(td);
+                                });
+                                table.append(tr);
+                            });
+                            //Add table to container
+                            container.appendChild(table);
+                        } else {
+                            //Resetting Container
+                            let container = document.getElementById("container");
+                            container.innerHTML = '';
+
+                            //Setting Invalid Entry Text
+                            let x = document.createTextNode("Invalid Entry");
+                            container.appendChild(x);
+                        }
+                    })
+            }
+
+            //Function to Get User Info
+            function get_user_info() {
+                //Check for input if empty
+                let x = document.getElementById("userID").value;
+                if (x == "") {
+                    x = 'SDF'
+                }
+                fetch('http://localhost:8080/API/get_user_info/' + x)
+                    .then(res => {
+                        return res.json();
+                    })
+                    .then(data => {
+                        //Check if correct data was entered
+                        if (data.user[0] != null) {
+                            //JSON Data Set
+                            jsonData = data;
+                            
+                            //Resetting Container
+                            let container = document.getElementById("container");
+                            container.innerHTML = '';
+
+                            //Creating Table
+                            let table = document.createElement("table");
+                            let tr = document.createElement("tr");
+                    
+                            //Going through object keys to set the title for the table
+                            Object.keys(jsonData.user[0]).forEach((item) => {
+                                let th = document.createElement("th");
+                                th.innerText = item;
+                                tr.appendChild(th);
+                            });
+                            table.append(tr);
+            
+                            //Setting the data for the tables
+                            jsonData.user.forEach((item) => {
+                                let tr = document.createElement("tr");
+                                let items = Object.values(item);
+                                
+                                //Values
+                                items.forEach((values) => {
+                                    let td = document.createElement("td");
+                                    td.innerText = values;
+                                    tr.appendChild(td);
+                                });
+                                table.append(tr);
+                            });
+                            //Add table to container
+                            container.appendChild(table);
+                        } else {
+                            //Resetting Container
+                            let container = document.getElementById("container");
+                            container.innerHTML = '';
+
+                            //Setting Invalid Entry Text
+                            let x = document.createTextNode("Invalid Entry");
+                            container.appendChild(x);
+                        }
+                    })
+            }
         </script>   
     </body>
-    <button onclick="allnames()">All Name</button>
-    <button onclick="myFunction()">Not Working</button>
-    <h1 id="demo">This is my HTML page </h1>
-    
-
 </html>
