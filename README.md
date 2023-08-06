@@ -8,14 +8,19 @@ Visit local IP ```http://127.0.0.1:8080/proj/get_first_names``` and look at the 
 Visit local IP ```http://127.0.0.1:8080/proj/get_first_names``` and you can look at all the different types of info available. 
 
 Here are the different Requests the HTML makes
+
 Returns all tweets on database
 ```http://localhost:8080/API/get_all_tweets```
+
 Returns Users on database
 ```http://localhost:8080/API/get_all_users```
+
 Returns All links mentioned in tweets 
 ```http://localhost:8080/API/get_all_links```
+
 Returns the specific tweet id
 ```'http://localhost:8080/API/get_tweet_info/(TWEET ID HERE)``` 
+
 Returns specific Screen Name Data
 ```http://localhost:8080/API/get_user_info/(USER SCREENNAME HERE)```
 
