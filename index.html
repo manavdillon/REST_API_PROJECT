@@ -1,0 +1,35 @@
+<html>
+    <body>
+
+        <script>
+            // fetch('http://localhost:8080/users/get_user_info')
+            //         .then(res => {
+            //             return res.json();
+            //         })
+            //         .then(data => {
+            //                console.log(data); 
+            //         })
+            //         .catch(error => console.log(error));
+            
+            function allnames(){
+                
+                fetch('http://localhost:8080/users/get_first_names')
+                    .then(res => {
+                        
+                        return res.json();
+                    })
+                    .then(data => {
+                        document.getElementById("demo").innerHTML = data;
+                           console.log(data); 
+                    })
+                
+            }
+
+        </script>   
+    </body>
+    <button onclick="allnames()">All Name</button>
+    <button onclick="myFunction()">Not Working</button>
+    <h1 id="demo">This is my HTML page </h1>
+    
+
+</html>
